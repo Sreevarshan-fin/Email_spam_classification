@@ -32,7 +32,7 @@ def load_tokenizer():
     return BertTokenizer.from_pretrained("./tokenizer_2")
 
 
-MODEL_URL = "https://drive.google.com/uc?export=download&id=12IlsRYLKUli7HH-ME_YXSBVGHrFIiZ3N"
+MODEL_URL = "https://drive.google.com/drive/u/2/folders/1whTjGfpTXdNR4LtLiP2_1T_AJwlshX1N"
 MODEL_PATH = "spam_bert_model_2.pt"
 
 
@@ -91,6 +91,7 @@ if predict:
             st.error("Spam message detected")
         else:
             st.success("Message classified as Ham")
+
 
 
 
