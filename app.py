@@ -31,8 +31,7 @@ st.caption("Classify text messages as Spam or Ham using a fine-tuned BERT model.
 def load_tokenizer():
     return BertTokenizer.from_pretrained("./tokenizer_2")
 
-
-MODEL_URL = "https://drive.google.com/drive/u/2/folders/1whTjGfpTXdNR4LtLiP2_1T_AJwlshX1N"
+FILE_ID = "1whTjGfpTXdNR4LtLiP2_1T_AJwlshX1N"
 MODEL_PATH = "spam_bert_model_2.pt"
 
 
@@ -91,6 +90,7 @@ if predict:
             st.error("Spam message detected")
         else:
             st.success("Message classified as Ham")
+
 
 
 
