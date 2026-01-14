@@ -31,16 +31,21 @@ st.caption("Classify text messages as Spam or Ham using a fine-tuned BERT model.
 def load_tokenizer():
     return BertTokenizer.from_pretrained("./tokenizer_2")
 
+
+MODEL_URL = "https://drive.google.com/drive/folders/1whTjGfpTXdNR4LtLiP2_1T_AJwlshX1N?usp=drive_link"
+MODEL_PATH = "spam_bert_model_2.pt"
+
+
 # ----------------------------------
 # Load model (LOCAL)
 # ----------------------------------
 @st.cache_resource
 def load_model():
-    device = torch.device("cpu")
+    if not os.path.exists(MODEL_PATH):
+        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+
     model = SentimentClassifier()
-    model.load_state_dict(
-        torch.load("spam_bert_model_2.pt", map_location=device)
-    )
+    model.load_state_dict(torch.load(MODEL_PATH, map_location="cpu"))
     model.eval()
     return model
 
@@ -86,5 +91,6 @@ if predict:
             st.error("Spam message detected")
         else:
             st.success("Message classified as Ham")
+
 
 
