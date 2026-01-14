@@ -41,13 +41,13 @@ MODEL_PATH = "spam_bert_model_2.pt"
 # ----------------------------------
 @st.cache_resource
 def load_model():
-    if not os.path.exists(MODEL_PATH):
-        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
-
     model = SentimentClassifier()
-    model.load_state_dict(torch.load(MODEL_PATH, map_location="cpu"))
+    model.load_state_dict(
+        torch.load(MODEL_PATH, map_location="cpu")
+    )
     model.eval()
     return model
+
 
 tokenizer = load_tokenizer()
 model = load_model()
@@ -91,6 +91,7 @@ if predict:
             st.error("Spam message detected")
         else:
             st.success("Message classified as Ham")
+
 
 
 
