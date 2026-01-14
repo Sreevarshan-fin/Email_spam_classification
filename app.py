@@ -4,11 +4,12 @@
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
+from huggingface_hub import hf_hub_download
 import streamlit as st
 import torch
 from transformers import BertTokenizer
 from model import SentimentClassifier
-import gdown
+
 # ----------------------------------
 # Page configuration
 # ----------------------------------
@@ -31,30 +32,24 @@ st.caption("Classify text messages as Spam or Ham using a fine-tuned BERT model.
 def load_tokenizer():
     return BertTokenizer.from_pretrained("./tokenizer_2")
 
-FILE_ID = "1whTjGfpTXdNR4LtLiP2_1T_AJwlshX1N"
-MODEL_PATH = "spam_bert_model_2.pt"
+
 
 
 # ----------------------------------
 # Load model (LOCAL)
 # ----------------------------------
+@st.cache_resource
 def load_model():
-    # Download model if not present
-    if not os.path.exists(MODEL_PATH):
-        st.write("Downloading model from Google Drive...")
-        url = f"https://drive.google.com/uc?id={FILE_ID}"
-        gdown.download(url, MODEL_PATH, quiet=False)
-
-    # Safety check
-    if not os.path.exists(MODEL_PATH):
-        st.error("Model file not found after download")
-        st.stop()
-
-    st.write("Loading model...")
+    model_path = hf_hub_download(
+        repo_id="sreevarshan05/spam_classification_bert",
+        filename="spam_bert_model_2.pt"
+    )
     model = SentimentClassifier()
-    model.load_state_dict(torch.load(MODEL_PATH, map_location="cpu"))
+    model.load_state_dict(torch.load(model_path, map_location="cpu"))
     model.eval()
     return model
+
+model = load_model()
 
 
 tokenizer = load_tokenizer()
@@ -99,6 +94,7 @@ if predict:
             st.error("Spam message detected")
         else:
             st.success("Message classified as Ham")
+
 
 
 
