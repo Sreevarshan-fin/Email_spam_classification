@@ -8,7 +8,7 @@ import streamlit as st
 import torch
 from transformers import BertTokenizer
 from model import SentimentClassifier
-import urllib.request
+import gdown
 # ----------------------------------
 # Page configuration
 # ----------------------------------
@@ -90,6 +90,7 @@ if predict:
             st.error("Spam message detected")
         else:
             st.success("Message classified as Ham")
+
 
 
 
