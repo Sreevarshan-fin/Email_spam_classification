@@ -2,7 +2,8 @@ torch==2.1.2
 transformers==4.36.2
 streamlit==1.29.0
 numpy==1.26.4
-gdown
+huggingface_hub
+
 
 
 
