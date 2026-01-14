@@ -38,12 +38,21 @@ MODEL_PATH = "spam_bert_model_2.pt"
 # ----------------------------------
 # Load model (LOCAL)
 # ----------------------------------
-@st.cache_resource
 def load_model():
+    # Download model if not present
+    if not os.path.exists(MODEL_PATH):
+        st.write("Downloading model from Google Drive...")
+        url = f"https://drive.google.com/uc?id={FILE_ID}"
+        gdown.download(url, MODEL_PATH, quiet=False)
+
+    # Safety check
+    if not os.path.exists(MODEL_PATH):
+        st.error("Model file not found after download")
+        st.stop()
+
+    st.write("Loading model...")
     model = SentimentClassifier()
-    model.load_state_dict(
-        torch.load(MODEL_PATH, map_location="cpu")
-    )
+    model.load_state_dict(torch.load(MODEL_PATH, map_location="cpu"))
     model.eval()
     return model
 
@@ -90,6 +99,7 @@ if predict:
             st.error("Spam message detected")
         else:
             st.success("Message classified as Ham")
+
 
 
 
